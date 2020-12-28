@@ -20,18 +20,21 @@ import numpy as np
 
 dssdata = dssdata.astype({'Union': 'int', 'Year':'int'})
 
+#dssdata = dssdata.astype({'Union': 'str','Year':'int'})
 #print(selected.to_string())
 
-'''
-year_range = {
-	'0':np.nan,
- 	'100': 'Base Line',
-    '2017': '2017',
-    '2018': '2018',
-    '2019': '2019'
-}
-'''
+#dssdata.style.format({"Union":"$"})
 
+
+year_range = {
+	'Base Line':100, 	
+    '2017': 2017,
+    '2018': 2018,
+    '2019': 2019,
+    '2020':2020
+}
+
+'''
 year_range = {    
     'Base Line':{        
         'value':100
@@ -49,20 +52,10 @@ year_range = {
         'value':2020
     }
 }
-
-
-
 '''
-unions = {  
-    '0': np.nan,  
-    '1': "Nawabpur",
-    '2': "Baharpur",
-    '3': "Jamalpur",
-    '4': "Islampur",
-    '5': "Baliakandi",
-    '6': "Jangal",
-    '7': "Narua"
-}
+
+
+
 '''
 unions = {
     'All':{
@@ -90,11 +83,24 @@ unions = {
         'value':7
     }    
 }
+'''
+unions = {   
+    'All':np.nan,  
+    'Nawabpur':1,
+    'Baharpur':2,
+    'Jamalpur':3,
+    'Islampur':4,
+    'Baliakandi':5,
+    'Jangal':6,
+    'Narua':7  
+}
 
+#union_key_list = list(unions.keys())
+#union_val_list = list(unions.values())
 
 #dssdata["Union"]=dssdata["Union"].map(unions)
 
-#print(dssdata.to_string())
+print(dssdata.to_string())
 
 year_control = Select(title="Year", options=sorted(year_range.keys()), value='2020')
 
@@ -103,16 +109,20 @@ union_control = Select(title="Union", options=sorted(unions.keys()), value='All'
 #ploting related
 sourcetable = ColumnDataSource(data=dict(union=[], age_1to4=[], year=[]))
 
+'''
+def union_label(value):    
+    return  0
+'''
 
 def select_dssdata():	
     year_val = year_control.value
     union_val = union_control.value
     selected = dssdata
     if (year_val != 'All'):
-        selected = selected[(dssdata.Year == year_range[year_val]['value'])]
+        selected = selected[(dssdata.Year == year_range[year_val])]
     
     if (union_val != 'All'):
-        selected = selected[(dssdata.Union == unions[union_val]['value'])]
+        selected = selected[(dssdata.Union == unions[union_val])]
     
 	
     return selected
@@ -125,6 +135,7 @@ def update():
         age_1to4=df["1_to_4"],
         year=df["Year"]        
     )
+
 
 
 
